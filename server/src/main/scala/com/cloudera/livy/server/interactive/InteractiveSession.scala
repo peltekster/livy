@@ -68,7 +68,7 @@ class InteractiveSession(
     info(s"Creating LivyClient for sessionId: $id")
     val builder = new LivyClientBuilder()
       .setConf("spark.app.name", s"livy-session-$id")
-      .setConf("spark.master", "yarn-cluster")
+      .setConf("spark.master", scala.util.Properties.envOrElse("LIVY_SPARK_MASTER", "local[*]"))
       .setURI(new URI("local:spark"))
       .setAll(Option(request.conf).map(_.asJava).getOrElse(new JHashMap()))
       .setConf("livy.client.sessionId", id.toString)
